@@ -150,32 +150,94 @@
         y: -model.rotation.x
       };
     };
+    class ModelCreate {
+      constructor(
+        props = {
+          width: 100,
+          height: 100,
+          depth: 100,
+          opacity: 0.2,
+          onlyShowLine: true,
+          isOpacity: true
+        },
+        scene = new THREE.Scene()
+      ) {
+        var geometry = new THREE.BoxGeometry(
+          props.width,
+          props.height,
+          props.depth
+        ); // 创建盒子模型 - 长 - 高 - 深度（变立体）
+        var material = new THREE.MeshBasicMaterial({
+          // 网状材料
+          // vertexColors: THREE.FaceColors,
+          wireframe: props.onlyShowLine,
+          // color: "#696969",
+          opacity: props.opacity,
+          transparent: props.isOpacity
+        });
+        var cube = new THREE.Mesh(geometry, material); // 模型 + 材料 = 它
+        cube.position.set(props.x, props.y, 0);
+        scene.add(cube);
+        return cube;
+      }
+    }
     var renderer = new THREE.WebGLRenderer(); // 渲染模块
     renderer.setSize(window.innerWidth, window.innerHeight); // set canvas尺寸
     renderer.domElement.classList.add("canvas");
     document.body.appendChild(renderer.domElement); // append dom
+    var cube = new ModelCreate(
+      {
+        width: 100,
+        height: 100,
+        depth: 100,
+        x: 0,
+        y: 0,
+        isOpacity: true,
+        opacity: 0.2,
+        onlyShowLine: true
+      },
+      scene
+    );
+    var cube1 = new ModelCreate(
+      {
+        width: 100,
+        height: 100,
+        depth: 100,
+        x: 100,
+        y: 0,
+        isOpacity: true,
+        opacity: 0.2,
+        onlyShowLine: true
+      },
+      scene
+    );
+    // var geometry = new THREE.BoxGeometry(100, 100, 100); // 创建盒子模型 - 长 - 高 - 深度（变立体）
+    // var material = new THREE.MeshBasicMaterial({
+    //   // 网状材料
+    //   // vertexColors: THREE.FaceColors,
+    //   wireframe: true,
+    //   // color: "#696969",
+    //   opacity: 0.2,
+    //   transparent: true
+    // });
+    // // for (var i = 0; i < geometry.faces.length; i += 2) {
+    // //   // 因为一面由两个三角面组成, 所有6面有12面
+    // //   var hex = Math.random() * 0xffffff;
+    // //   geometry.faces[i].color.setHex(hex);
+    // //   geometry.faces[i + 1].color.setHex(hex);
+    // // }
+    // // console.log(geometry.faces);
 
-    var geometry = new THREE.BoxGeometry(100, 100, 100); // 创建盒子模型 - 长 - 高 - 深度（变立体）
-    var material = new THREE.MeshBasicMaterial({
-      // 网状材料
-      vertexColors: THREE.FaceColors
-    });
-    for (var i = 0; i < geometry.faces.length; i += 2) {
-      // 因为一面由两个三角面组成, 所有6面有12面
-      var hex = Math.random() * 0xffffff;
-      geometry.faces[i].color.setHex(hex);
-      geometry.faces[i + 1].color.setHex(hex);
-    }
-    console.log(geometry.faces);
-
-    var cube = new THREE.Mesh(geometry, material); // 模型 + 材料 = 它
-    scene.add(cube); // 场景添加模型
+    // var cube = new THREE.Mesh(geometry, material); // 模型 + 材料 = 它
+    // scene.add(cube); // 场景添加模型
 
     // camera.position.x = _x(60);
     // camera.position.y = 200;
     // camera.position.z = 500;
     _modelX(cube, 11);
     _modelY(cube, 3.9);
+    _modelX(cube1, 11);
+    _modelY(cube1, 3.9);
     // cube.rotation.x += 10.4;
     // cube.rotation.y += _modelY(cube) + 0.6; // 左转
 
@@ -195,6 +257,7 @@
 
     renderer.render(scene, camera);
     var touchendSpeed = {
+      // 计算惯性速度
       isMove: true,
       arr: []
     };
@@ -212,13 +275,13 @@
           // }
         },
         move: function(res) {
-          touchendSpeed.arr.push(res);
+          // touchendSpeed.arr.push(res);
           _modelX(cube, _model(cube).x - res.x / 1000);
           _modelY(cube, _model(cube).y + res.y / 1000);
           renderer.render(scene, camera);
         },
         end: function(res) {
-          console.log(touchendSpeed.arr);
+          // console.log(touchendSpeed.arr);
           // touchendSpeed.isMove = true
           // _modelX(cube, _model(cube).x - res.x / 1000);
           // _modelY(cube, _model(cube).y + res.y / 1000);
