@@ -138,6 +138,12 @@
     var _cameraY = function(camera, val) {
       camera.position.y = val;
     };
+    // var _camera = function(camera) {
+    //   return {
+    //     x: -camera.position.x,
+    //     y: -camera.position.y
+    //   };
+    // };
     var _modelY = function(model, val) {
       model.rotation.x = -val;
     };
@@ -238,6 +244,7 @@
     _modelY(cube, 3.9);
     _modelX(cube1, 11);
     _modelY(cube1, 3.9);
+
     // cube.rotation.x += 10.4;
     // cube.rotation.y += _modelY(cube) + 0.6; // 左转
 
@@ -276,8 +283,15 @@
         },
         move: function(res) {
           // touchendSpeed.arr.push(res);
+          // 第一个
           _modelX(cube, _model(cube).x - res.x / 1000);
           _modelY(cube, _model(cube).y + res.y / 1000);
+          // 第二个
+          _modelX(cube1, _model(cube1).x - res.x / 1000);
+          _modelY(cube1, _model(cube1).y + res.y / 1000);
+          // _cameraX(camera, _camera(camera).x + res.x / 10);
+          // _cameraY(camera, -(_camera(camera).y + res.y / 10));
+
           renderer.render(scene, camera);
         },
         end: function(res) {
